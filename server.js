@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const PORT = process.env.PORT || 3001;
 const app = express();
+const htlmRoutes =require('./routes/htmlRoutes')
+const apiRoutes =require('./routes/apiRoutes')
 
 
 
@@ -12,6 +14,11 @@ app.use(express.json());
 
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
+
+// apiRoutes
+app.use(apiRoutes);
+app.use(htlmRoutes);
+
 
 app.listen(PORT, () => {
     console.log(`App listening at http://localhost:${PORT}`)
