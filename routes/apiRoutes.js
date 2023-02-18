@@ -15,3 +15,20 @@ async function getNotes() {
     let data = await fs.readFile(notesDataPath, 'utf8')
     return JSON.parse(data)
 }
+
+router.post('/api/notes', async (req, res) => {
+    let notesDataPath =path.join(__dirname, '../db/db.json');
+    let createNote = req.body;
+
+    createNote.id =uuidv4();
+    let notesData =await getNotes();
+    notesData.push(createNote);
+    fs.writeFile(notesDataPath, JSON.stringify(notesData), (err) => {
+        if (err) {
+            return console.log(err);
+        }
+        console.log('Your note has been created!')
+    });
+    res.json(createNote);
+});
+
