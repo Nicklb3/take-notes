@@ -17,18 +17,36 @@ async function getNotes() {
 }
 
 router.post('/api/notes', async (req, res) => {
-    let notesDataPath =path.join(__dirname, '../db/db.json');
+    let notesDataPath = path.join(__dirname, '../db/db.json');
     let createNote = req.body;
 
-    createNote.id =uuidv4();
-    let notesData =await getNotes();
+    createNote.id = uuidv4();
+    let notesData = await getNotes();
     notesData.push(createNote);
     fs.writeFile(notesDataPath, JSON.stringify(notesData), (err) => {
         if (err) {
             return console.log(err);
         }
-        console.log('Your note has been created!')
+        console.log('Your note has been created!');
     });
     res.json(createNote);
 });
+
+router.delete('/api/notes/:id', async (req, res) => {
+    let notesDataPath = path.join(__dirname, '../db/db.json');
+    let notesData = await getNotes();
+    let deletedNotes = []
+    for (let i = 0; i < notesData.length; i++) {
+        if (notesData[i].id == req.params.id) {
+            deletedNotes = notesData.splice(i, 1);
+            break;
+        }
+    }
+
+    await fs.writeFile(notesDataPath, JSON.stringify(notesData), );
+    res.json(deletedNotes)
+
+})
+
+module.exports = router;
 
