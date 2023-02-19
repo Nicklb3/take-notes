@@ -8,9 +8,10 @@ const path = require('path');
 router.get('/api/notes', async (req, res) => {
     let notesData = await getNotes()
     res.json(notesData)
+    
 });
 
-async function getNotes() {
+async function getNotes(){
     let notesDataPath = path.join(__dirname, '../db/db.json');
     let data = await fs.readFile(notesDataPath, 'utf8')
     return JSON.parse(data)
@@ -20,7 +21,7 @@ async function getNotes() {
 router.post('/api/notes', async (req, res) => {
     let notesDataPath = path.join(__dirname, '../db/db.json');
     let createNote = req.body;
-
+  
     createNote.id = uuidv4();
     let notesData = await getNotes();
     notesData.push(createNote);
@@ -28,7 +29,7 @@ router.post('/api/notes', async (req, res) => {
         if (err) {
             return console.log(err);
         }
-        console.log('Your note has been created!');
+          console.log('Your notes has been created!');
     });
     res.json(createNote);
 });
@@ -38,18 +39,18 @@ router.delete('/api/notes/:id', async (req, res) => {
     let notesDataPath = path.join(__dirname, '../db/db.json');
     let notesData = await getNotes();
     let deletedNotes = []
-    for (let i = 0; i < notesData.length; i++) {
-        if (notesData[i].id == req.params.id) {
-            deletedNotes = notesData.splice(i, 1);
-            break;
-        }
-    }
-
-
-    // Writes the notesData array to a file using the synchronous version of fs.writeFile, fs.writeFileSync, and returns the updated notesData as a JSON response. If the write operation fails, an error message is logged to the console.
+    for (let i = 0; i < notesData.length; i++){
+      if (notesData[i].id == req.params.id){ 
+          deletedNotes = notesData.splice(i, 1);
+          break;
+      }
+    } 
+     
+      
+  //    //This code writes the notesData array to a file using the synchronous version of fs.writeFile, fs.writeFileSync, and returns the updated notesData as a JSON response. If the write operation fails, an error message is logged to the console.
     await fs.writeFile(notesDataPath, JSON.stringify(notesData), );
     res.json(deletedNotes)
-
+  
 })
 
 module.exports = router;
