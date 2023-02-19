@@ -16,7 +16,6 @@ async function getNotes() {
     return JSON.parse(data)
 }
 
-
 // Creates a POST endpoint '/api/notes' in an Express.js router. When a POST request is received at this endpoint, it extracts the request body and adds a unique ID to it using the uuid module. The updated data is then added to the notesData array and saved to the 'db.json' file. Finally, the created note is returned as a JSON response.
 router.post('/api/notes', async (req, res) => {
     let notesDataPath = path.join(__dirname, '../db/db.json');
